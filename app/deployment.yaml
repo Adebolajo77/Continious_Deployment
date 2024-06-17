@@ -1,9 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-argocd
   labels:
     app: nginx
+    app.kubernetes.io/instance: nginx-argocd-application
+  name: nginx-argocd
+  namespace: app
 spec:
   replicas: 3
   selector:
@@ -15,8 +17,8 @@ spec:
         app: nginx
     spec:
       containers:
-      - name: nginx
-        image: nginx:latest
-        ports:
-        - containerPort: 80
-          name: http-web-svc
+        - image: 'nginx:latest'
+          name: nginx
+          ports:
+            - containerPort: 80
+              name: http-web-svc
