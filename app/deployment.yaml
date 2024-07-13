@@ -2,23 +2,27 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: nginx
+    app: computervision
     app.kubernetes.io/instance: nginx-argocd-application
-  name: nginx-argocd
+  name: computervision-argocd
   namespace: app
 spec:
-  replicas: 10
+  replicas: 1
   selector:
     matchLabels:
-      app: nginx
+      app: computervision
   template:
     metadata:
       labels:
-        app: nginx
+        app: computervision
     spec:
       containers:
-        - image: 'nginx:latest'
-          name: nginx
+        - image: 'localhost:5000/computervision:2.0'
+          name: computervision-container
           ports:
-            - containerPort: 80
+            - containerPort: 8024
               name: http-web-svc
+          resources:
+            limits:
+              nvidia.com/gpu: "1"  # Assuming you have 1 GPU, adjust as per your setup
+      restartPolicy: Always  # Restart policy for the container

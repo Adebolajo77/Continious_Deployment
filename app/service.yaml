@@ -3,13 +3,14 @@ kind: Service
 metadata:
   labels:
     app.kubernetes.io/instance: nginx-argocd-application
-  name: nginx-service-argocd
+  name: computervision-service-argocd
   namespace: app
 spec:
   ports:
     - nodePort: 30086
-      port: 8066
+      port: 8024
       targetPort: http-web-svc
   selector:
-    app: nginx
+    app: computervision
   type: LoadBalancer
+
