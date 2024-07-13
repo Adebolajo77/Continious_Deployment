@@ -7,7 +7,7 @@ metadata:
   name: computervision-argocd
   namespace: app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: computervision
@@ -25,4 +25,10 @@ spec:
           resources:
             limits:
               nvidia.com/gpu: "1"  # Assuming you have 1 GPU, adjust as per your setup
-      restartPolicy: Always  # Restart policy for the container
+      tolerations:
+        - key: "nvidia.com/gpu"
+          operator: "Exists"
+          effect: "NoSchedule"
+      nodeSelector:
+        nvidia.com/gpu.present: "true"
+      restartPolicy: Always
