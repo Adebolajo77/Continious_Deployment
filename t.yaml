@@ -1,11 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-      app: computervision
-      app.kubernetes.io/instance: nginx-argocd-application
   name: computervision-deployment
-  namespace: app
 spec:
   replicas: 5  # Adjust the number of replicas as needed
   selector:
@@ -22,3 +18,17 @@ spec:
           ports:
             - containerPort: 8024
       restartPolicy: Always  # Restart policy for the container
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: computervision-service
+spec:
+  selector:
+    app: computervision
+  ports:
+    - protocol: TCP
+      port: 8024       # The port that the service will expose
+      targetPort: 8024  # The port on the container to direct traffic to
+  type: LoadBalancer  # Change to NodePort if running locally or without a cloud provider
+
