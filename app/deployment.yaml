@@ -2,33 +2,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: computervision
+    app: nginx
     app.kubernetes.io/instance: nginx-argocd-application
-  name: computervision-argocd
+  name: nginx-argocd
   namespace: app
 spec:
-  replicas: 1
+  replicas: 10
   selector:
     matchLabels:
-      app: computervision
+      app: nginx
   template:
     metadata:
       labels:
-        app: computervision
+        app: nginx
     spec:
       containers:
-        - image: 'localhost:5000/computervision:2.0'
-          name: computervision-container
+        - image: 'nginx:latest'
+          name: nginx
           ports:
-            - containerPort: 8024
-              name: http-web-svc
-          resources:
-            limits:
-              nvidia.com/gpu: "1"  # Assuming you have 1 GPU, adjust as per your setup
-      tolerations:
-        - key: "nvidia.com/gpu"
-          operator: "Exists"
-          effect: "NoSchedule"
-      nodeSelector:
-        nvidia.com/gpu.present: "true"
-      restartPolicy: Always
+            - containerPort: 80
+              name: http-web-svcz
