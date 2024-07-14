@@ -21,4 +21,12 @@ spec:
           image: 'localhost:5000/computervision:2.0'
           ports:
             - containerPort: 8024
+          volumeMounts:
+            - name: computervision-volume
+              mountPath: /workspace
+      volumes:
+        - name: computervision-volume
+          hostPath:
+            path: /home/adebolajo/Desktop/AI-projects/AI_Agents/computervision/docker_yolo
+            type: Directory
       restartPolicy: Always  # Restart policy for the container
