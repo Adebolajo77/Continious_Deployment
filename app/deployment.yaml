@@ -7,7 +7,7 @@ metadata:
   name: computervision-deployment
   namespace: app
 spec:
-  replicas: 2  # Adjust the number of replicas as needed
+  replicas: 4  # Adjust the number of replicas as needed
   selector:
     matchLabels:
       app: computervision
