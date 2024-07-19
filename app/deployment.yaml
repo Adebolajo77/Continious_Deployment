@@ -1,3 +1,125 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: transcription
+    app.kubernetes.io/instance: nginx-argocd-application
+  name: transcription-deployment
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: transcription
+  template:
+    metadata:
+      labels:
+        app: transcription
+    spec:
+      containers:
+      - name: transcription
+        image: 10.10.45.1:5000/my-subtitle-app:latest
+        ports:
+        - containerPort: 50051
+        volumeMounts:
+        - mountPath: /workspace
+          name: file-path
+        env:
+        - name: CUDA_VISIBLE_DEVICES
+          value: "0,1"  # Specify GPU 1 here
+      volumes:
+      - name: file-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/transcription
+      restartPolicy: Always
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: speech-synthesis
+    app.kubernetes.io/instance: nginx-argocd-application
+  name: speech-synthesis-deployment
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: speech-synthesis
+  template:
+    metadata:
+      labels:
+        app: speech-synthesis
+    spec:
+      containers:
+      - name: speech-synthesis
+        image: 10.10.45.1:5000/ai-apis_speech_synthesis:latest  # Use the correct image path here
+        ports:
+        - containerPort: 1407
+        volumeMounts:
+        - mountPath: /speech_synthesis/db/hausa
+          name: hausa-db-path
+        - mountPath: /speech_synthesis/db/pidgin
+          name: pidgin-db-path
+        - mountPath: /speech_synthesis/api_utils
+          name: api-utils-path
+        env:
+        - name: CUDA_VISIBLE_DEVICES
+          value: "1"  # Specify GPU 0 here
+      volumes:
+      - name: hausa-db-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/speech_synthesis/db/hausa
+      - name: pidgin-db-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/speech_synthesis/db/pidgin
+      - name: api-utils-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/api_utils
+      restartPolicy: Always
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: digital-literacy
+    app.kubernetes.io/instance: nginx-argocd-application
+  name: digital-literacy-deployment
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: digital-literacy
+  template:
+    metadata:
+      labels:
+        app: digital-literacy
+    spec:
+      containers:
+      - name: digital-literacy
+        image: 10.10.45.1:5000/ai-apis_digital_literacy:latest  # Use the correct image path here
+        ports:
+        - containerPort: 1405
+        volumeMounts:
+        - mountPath: /digital_literacy/db
+          name: db-path
+        - mountPath: /digital_literacy/api_utils
+          name: api-utils-path
+      volumes:
+      - name: db-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/digital_literacy/db
+      - name: api-utils-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/api_utils
+      restartPolicy: Always
+
+---
 
 apiVersion: apps/v1
 kind: Deployment
@@ -35,3 +157,162 @@ spec:
         hostPath:
           path: /mnt/SDD1/ai-apis/api_utils
       restartPolicy: Always
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: omiefe-ai
+    app.kubernetes.io/instance: nginx-argocd-application
+  name: omiefe-ai-deployment
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: omiefe-ai
+  template:
+    metadata:
+      labels:
+        app: omiefe-ai
+    spec:
+      containers:
+      - name: omiefe-ai
+        image: 10.10.45.1:5000/ai-apis_omiefe_ai:latest  # Use the correct image path here
+        ports:
+        - containerPort: 1404
+        volumeMounts:
+        - mountPath: /omeife_ai/db
+          name: db-path
+        - mountPath: /omeife_ai/api_utils
+          name: api-utils-path
+      volumes:
+      - name: db-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/omeife_ai_v2/db
+      - name: api-utils-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/api_utils
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: multilang-translation
+    app.kubernetes.io/instance: nginx-argocd-application
+  name: multilang-translation-deployment
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multilang-translation
+  template:
+    metadata:
+      labels:
+        app: multilang-translation
+    spec:
+      containers:
+      - name: multilang-translation
+        image: 10.10.45.1:5000/ai-apis_multilang_translation:latest  # Use the correct image path here
+        ports:
+        - containerPort: 1401
+        volumeMounts:
+        - mountPath: /Translation/api_utils
+          name: api-utils-path
+        env:
+        - name: NVIDIA_VISIBLE_DEVICES
+          value: "1"  # Specify GPU 1 here
+      volumes:
+      - name: api-utils-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/api_utils
+      restartPolicy: Always
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: srt-translation
+    app.kubernetes.io/instance: nginx-argocd-application
+  name: srt-translation-deployment
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: srt-translation
+  template:
+    metadata:
+      labels:
+        app: srt-translation
+    spec:
+      containers:
+      - name: srt-translation
+        image: 10.10.45.1:5000/ai-apis_srt_translation:latest  # Use the correct image path here
+        ports:
+        - containerPort: 1402
+        volumeMounts:
+        - mountPath: /Translation/app/data/
+          name: db-path
+        - mountPath: /Translation/api_utils
+          name: api-utils-path
+        env:
+        - name: NVIDIA_VISIBLE_DEVICES
+          value: "1"  # Specify GPU 1 here
+      volumes:
+      - name: db-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/db/
+      - name: api-utils-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/api_utils
+      restartPolicy: Always
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: srt-to-audio
+    app.kubernetes.io/instance: nginx-argocd-application
+  name: srt-to-audio-deployment
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: srt-to-audio
+  template:
+    metadata:
+      labels:
+        app: srt-to-audio
+    spec:
+      containers:
+      - name: srt-to-audio
+        image: 10.10.45.1:5000/ai-apis_srt_to_audio:latest  # Use the correct image path here
+        ports:
+        - containerPort: 1403
+        volumeMounts:
+        - mountPath: /srt_to_audio/db
+          name: db-path
+        - mountPath: /srt_to_audio/api_utils
+          name: api-utils-path
+        env:
+        - name: NVIDIA_VISIBLE_DEVICES
+          value: "1"  # Specify GPU 1 here
+      volumes:
+      - name: db-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/srt_to_audio/db
+      - name: api-utils-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/api_utils
+      restartPolicy: Always
+
