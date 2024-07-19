@@ -2,29 +2,37 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-      app: computervision
-      app.kubernetes.io/instance: nginx-argocd-application
-  name: computervision-deployment
+    app: transcription
+    app.kubernetes.io/instance: nginx-argocd-application
+  name: transcription-deployment
   namespace: app
 spec:
-  replicas: 4  # Adjust the number of replicas as needed
+  replicas: 1
   selector:
     matchLabels:
-      app: computervision
+      app: transcription
   template:
     metadata:
       labels:
-        app: computervision
+        app: transcription
     spec:
       containers:
-        - name: computervision-container
-          image: 'localhost:5000/computervision:2.0'
-          ports:
-            - containerPort: 8024
-          volumeMounts:
-            - name: computervision-volume
-              mountPath: /workspace
+      - name: transcription
+        image: 10.10.45.1:5000/my-subtitle-app:latest
+        ports:
+        - containerPort: 50051
+        volumeMounts:
+        - mountPath: /workspace
+          name: file-path
+        env:
+        - name: CUDA_VISIBLE_DEVICES
+          value: "0"  # Specify GPU 1 here
       volumes:
+      - name: file-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/transcription
+      restartPolicy: Always
+
         - name: computervision-volume
           hostPath:
             path: /home/adebolajo/Desktop/AI-projects/AI_Agents/computervision/docker_yolo
