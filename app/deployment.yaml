@@ -32,9 +32,3 @@ spec:
         hostPath:
           path: /mnt/SDD1/ai-apis/transcription
       restartPolicy: Always
-
-        - name: computervision-volume
-          hostPath:
-            path: /home/adebolajo/Desktop/AI-projects/AI_Agents/computervision/docker_yolo
-            type: Directory
-      restartPolicy: Always  # Restart policy for the container
