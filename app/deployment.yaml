@@ -32,3 +32,167 @@ spec:
         hostPath:
           path: /mnt/SDD1/ai-apis/transcription
       restartPolicy: Always
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: speech-synthesis
+    app.kubernetes.io/instance: nginx-argocd-application
+  name: speech-synthesis-deployment
+  namespace: app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: speech-synthesis
+  template:
+    metadata:
+      labels:
+        app: speech-synthesis
+    spec:
+      containers:
+      - name: speech-synthesis
+        image: 10.10.45.1:5000/ai-apis_speech_synthesis:latest  # Use the correct image path here
+        ports:
+        - containerPort: 1407
+        volumeMounts:
+        - mountPath: /speech_synthesis/db/hausa
+          name: hausa-db-path
+        - mountPath: /speech_synthesis/db/pidgin
+          name: pidgin-db-path
+        - mountPath: /speech_synthesis/api_utils
+          name: api-utils-path
+        env:
+        - name: CUDA_VISIBLE_DEVICES
+          value: "1"  # Specify GPU 0 here
+      volumes:
+      - name: hausa-db-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/speech_synthesis/db/hausa
+      - name: pidgin-db-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/speech_synthesis/db/pidgin
+      - name: api-utils-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/api_utils
+      restartPolicy: Always
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: digital-literacy
+    app.kubernetes.io/instance: nginx-argocd-application
+  name: digital-literacy-deployment
+  namespace: app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: digital-literacy
+  template:
+    metadata:
+      labels:
+        app: digital-literacy
+    spec:
+      containers:
+      - name: digital-literacy
+        image: 10.10.45.1:5000/ai-apis_digital_literacy:latest  # Use the correct image path here
+        ports:
+        - containerPort: 1405
+        volumeMounts:
+        - mountPath: /digital_literacy/db
+          name: db-path
+        - mountPath: /digital_literacy/api_utils
+          name: api-utils-path
+      volumes:
+      - name: db-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/digital_literacy/db
+      - name: api-utils-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/api_utils
+      restartPolicy: Always
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: knowledge-assistance
+    app.kubernetes.io/instance: nginx-argocd-application
+  name: knowledge-assistance-deployment
+  namespace: app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: knowledge-assistance
+  template:
+    metadata:
+      labels:
+        app: knowledge-assistance
+    spec:
+      containers:
+      - name: knowledge-assistance
+        image: 10.10.45.1:5000/ai-apis_knowledge_assistance:latest  # Use the correct image path here
+        ports:
+        - containerPort: 1406
+        volumeMounts:
+        - mountPath: /knowledge_assistance/db
+          name: db-path
+        - mountPath: /knowledge_assistance/api_utils
+          name: api-utils-path
+      volumes:
+      - name: db-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/knowledge_assistance/db
+      - name: api-utils-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/api_utils
+      restartPolicy: Always
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: omiefe-ai
+    app.kubernetes.io/instance: nginx-argocd-application
+  name: omiefe-ai-deployment
+  namespace: app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: omiefe-ai
+  template:
+    metadata:
+      labels:
+        app: omiefe-ai
+    spec:
+      containers:
+      - name: omiefe-ai
+        image: 10.10.45.1:5000/ai-apis_omiefe_ai:latest  # Use the correct image path here
+        ports:
+        - containerPort: 1404
+        volumeMounts:
+        - mountPath: /omeife_ai/db
+          name: db-path
+        - mountPath: /omeife_ai/api_utils
+          name: api-utils-path
+      volumes:
+      - name: db-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/omeife_ai_v2/db
+      - name: api-utils-path
+        hostPath:
+          path: /mnt/SDD1/ai-apis/api_utils
+      restartPolicy: Always
