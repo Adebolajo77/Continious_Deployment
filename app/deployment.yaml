@@ -7,7 +7,7 @@ metadata:
   name: transcription-deployment
   namespace: app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: transcription
@@ -44,7 +44,7 @@ metadata:
   name: speech-synthesis-deployment
   namespace: app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: speech-synthesis
@@ -91,7 +91,7 @@ metadata:
   name: digital-literacy-deployment
   namespace: app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: digital-literacy
@@ -130,7 +130,7 @@ metadata:
   name: knowledge-assistance-deployment
   namespace: app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: knowledge-assistance
@@ -169,7 +169,7 @@ metadata:
   name: omiefe-ai-deployment
   namespace: app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: omiefe-ai
@@ -206,7 +206,7 @@ metadata:
   name: multilang-translation-deployment
   namespace: app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: multilang-translation
@@ -243,7 +243,7 @@ metadata:
   name: srt-translation-deployment
   namespace: app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: srt-translation
@@ -285,7 +285,7 @@ metadata:
   name: srt-to-audio-deployment
   namespace: app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: srt-to-audio
