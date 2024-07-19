@@ -14,3 +14,79 @@ spec:
     protocol: TCP
     targetPort: 50051
   type: LoadBalancer
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/instance: nginx-argocd-application
+  name: speech-synthesis-service
+  namespace: app
+spec:
+  selector:
+    app: speech-synthesis
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 1407
+  type: LoadBalancer
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/instance: nginx-argocd-application
+  name: digital-literacy-service
+  namespace: app
+spec:
+  selector:
+    app: digital-literacy
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 1405
+  type: LoadBalancer
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/instance: nginx-argocd-application
+  name: knowledge-assistance-service
+  namespace: app
+spec:
+  selector:
+    app: knowledge-assistance
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 1406
+  type: LoadBalancer
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/instance: nginx-argocd-application
+  name: omiefe-ai-service
+  namespace: app
+spec:
+  selector:
+    app: omiefe-ai
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 1404
+  type: LoadBalancer
